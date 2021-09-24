@@ -1,0 +1,46 @@
+{
+  "name": "@alpaca-backend/dynamo-backup-to-s3",
+  "version": "0.6.1",
+  "author": "Dylan Lingelbach (https://github.com/dylanlingelbach)",
+  "license": "MIT",
+  "contributors": [
+    "Steven de Salas (https://github.com/sdesalas)"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/markitx/dynamo-backup-to-s3.git"
+  },
+  "keywords": [
+    "dynamo",
+    "dynamodb",
+    "backup",
+    "streaming",
+    "s3",
+    "stream"
+  ],
+  "main": "index.js",
+  "bin": {
+    "dynamo-backup-to-s3": "./bin/dynamo-backup-to-s3.js"
+  },
+  "dependencies": {
+    "async": "^1.5.0",
+    "aws-sdk": "^2.2.21",
+    "commander": "^2.9.0",
+    "lodash": "^3.10.1",
+    "moment": "^2.10.6",
+    "moment-range": "^2.0.3",
+    "s3-streaming-upload": "^0.2.1"
+  },
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "bugs": {
+    "url": "https://github.com/markitx/dynamo-backup-to-s3/issues"
+  },
+  "devDependencies": {
+    "mocha": "^2.3.4"
+  },
+  "scripts": {
+    "test": "NODE_ENV=test mocha --timeout 120000"
+  }
+}

@@ -1,0 +1,95 @@
+{
+  "name": "cdk-lerna-example",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "alpaca-backend",
+  "license": "MIT",
+  "private": true,
+  "workspaces": {
+    "packages": [
+      "packages/*",
+      "utils/*"
+    ]
+  },
+  "scripts": {
+    "clean:light": "rm -rf ./tsconfig.build.tsbuildinfo && rm -rf ./dist",
+    "clean:wp": "rm -rf ~/.npm/_npx/89d6e678e21f2dae/node_modules/webpack rm -rf ~/.npm/_npx/89d6e678e21f2dae/node_modules/acorn && npm cache verify && npm cache clean --force && yarn install &&  yarn clean:light",
+    "clean:full": "yarn run clean:light && rm -rf ./node_modules",
+    "test:watch": "jest --watch --runInBand --colors",
+    "test": "jest --coverage --runInBand --colors --bail --detectOpenHandles",
+    "test:with:env": "yarn local:db:start:test:db && yarn test && yarn local:db:force:stop",
+    "local:db:start:test:db": "lerna run start:test:db --scope @alpaca-backend/local-test-server --stream",
+    "local:db:force:stop": "lerna run force:stop --scope @alpaca-backend/local-test-server --stream",
+    "lint": "eslint './{utils,packages}/**/src/**/*.ts'",
+    "pretty": "yarn prettier --write './{utils,packages}/**/src/**/*.ts'",
+    "typecheck": "yarn lerna run typecheck --parallel",
+    "start": "lerna run start --stream --parallel",
+    "force:stop": "lerna run force:stop --stream --parallel",
+    "nodemon": "nodemon",
+    "build": "lerna run build",
+    "build:prod": "NODE_ENV=production yarn build",
+    "cdk:synth": "lerna run synth --scope @alpaca-backend/cdk-app && rm -rf cdk.out && cp -r packages/cdk-app/cdk.out cdk.out",
+    "dynamo:prod:snapshot": "yarn dynamo-util snapshot --fromEnv=prod",
+    "dynamo:prod:to:staging": "yarn dynamo-util copy-tables --fromEnv=prod --toEnv=staging",
+    "dynamo:prod:to:test": "yarn dynamo-util copy-tables --fromEnv=prod --toEnv=test --toIsLocal=true",
+    "dynamo:staging:to:test": "yarn dynamo-util copy-tables --fromEnv=staging --toEnv=test --toIsLocal=true"
+  },
+  "devDependencies": {
+    "@alpaca-backend/dynamo-util": "^1.0.0",
+    "@types/aws-lambda": "^8.10.76",
+    "@types/faker": "^5.5.3",
+    "@types/jest": "^26.0.23",
+    "@types/node": "^15.0.2",
+    "@typescript-eslint/eslint-plugin": "^4.22.1",
+    "@typescript-eslint/parser": "^4.22.1",
+    "apollo-server-express": "^2.24.0",
+    "axios": "^0.21.1",
+    "eslint": "^7.25.0",
+    "eslint-config-airbnb": "^18.2.1",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-prettier": "^3.4.0",
+    "express": "^4.17.1",
+    "faker": "^5.5.3",
+    "fork-ts-checker-webpack-plugin": "^6.3.2",
+    "husky": "^4.3.8",
+    "jest": "^26.6.3",
+    "jest-watch-typeahead": "^0.6.3",
+    "jsonwebtoken": "^8.5.1",
+    "jwk-to-pem": "^2.0.5",
+    "lambda-local": "^1.7.4",
+    "lerna": "^4.0.0",
+    "lint-staged": "^10.5.4",
+    "nodemon": "^2.0.7",
+    "prettier-eslint": "^12.0.0",
+    "promise-poller": "^1.9.1",
+    "tree-kill": "^1.2.2",
+    "ts-jest": "^26.5.6",
+    "ts-loader": "^8.2.0",
+    "ts-node": "^9.1.1",
+    "tsconfig-paths": "^3.9.0",
+    "tsconfig-paths-jest": "^0.0.1",
+    "tsconfig-paths-webpack-plugin": "^3.5.1",
+    "tslib": "^2.3.1",
+    "typescript": "^4.2.4",
+    "webpack": "^4.46.0",
+    "webpack-cli": "^4.6.0",
+    "webpack-merge": "^5.7.3"
+  },
+  "lint-staged": {
+    "{packages,utils}/*/src/**/*.{ts,tsx}": [
+      "prettier --write",
+      "eslint --fix",
+      "jest --bail --runInBand --findRelatedTests"
+    ],
+    "{packages,utils}/*/src/**/*.{json,ts,tsx,html,css,scss}": [
+      "prettier --write --config ./.prettierrc"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged && lerna run precommit --parallel --since HEAD"
+    }
+  }
+}

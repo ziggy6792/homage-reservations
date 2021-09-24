@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "sourceMap": true,
+    "target": "es2017",
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "importHelpers": true,
+    "declaration": true,
+    "module": "commonjs",
+    "rootDir": "./",
+    "baseUrl": ".",
+    "skipLibCheck": true,
+    "paths": {}
+  },
+  "exclude": ["node_modules", "dist", "build", "**/build", "**/dist", "**/node_modules", "cdk.out", "**/cdk.out"]
+}
